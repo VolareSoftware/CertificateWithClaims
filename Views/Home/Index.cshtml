@@ -1,0 +1,68 @@
+﻿@model CertificateValues
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+
+    <p>Current client certificate:</p>
+    <div class="row">
+        <div class="col text-right">
+            <strong>Thumbprint</strong>
+        </div>
+        <div class="col text-left">
+            @Model.Thumbprint
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-right">
+            <strong>Valid From</strong>
+        </div>
+        <div class="col text-left">
+            @Model.ValidFrom?.ToLongDateString()
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-right">
+            <strong>Valid To</strong>
+        </div>
+        <div class="col text-left">
+            @Model.ValidTo?.ToLongDateString()
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-right">
+            <strong>Issuer Name</strong>
+        </div>
+        <div class="col text-left">
+            @Model.IssuerName
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-right">
+            <strong>Subject Name</strong>
+        </div>
+        <div class="col text-left">
+            @Model.SubjectName
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-right">
+            <strong>User Name</strong>
+        </div>
+        <div class="col text-left">
+            @Model.UserName
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-right">
+            <strong>User Email</strong>
+        </div>
+        <div class="col text-left">
+            @Model.UserEmail
+        </div>
+    </div>
+</div>

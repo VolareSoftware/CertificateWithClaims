@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "U5ggpxhNPfJ0fxlzFLnJkXnXS9vgY3kEs2aGJwpREs1EmXHbZrFdUC1CwbbeuAyioGFmWgoFlJf1Hl3TNO6+3Q==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\joe\\Dropbox\\My Projects\\Samples\\CertificateWithClaims\\CertificateWithClaims.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\joe\\.nuget\\packages\\microsoft.aspnetcore.authentication.certificate\\3.1.4\\microsoft.aspnetcore.authentication.certificate.3.1.4.nupkg.sha512",
+    "C:\\Users\\joe\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -2,10 +2,11 @@
 
 namespace CertificateWithClaims.Services
 {
-    public class CertificateValidator : ICertificateValidator
+    public class CertificateValidator
     {
         public bool ValidateCertificate(X509Certificate2 clientCertificate)
         {
+            // For testing
             return true;
 
             // Check client certificate thumbprint against certificate thumbprint (using PFX file and password)

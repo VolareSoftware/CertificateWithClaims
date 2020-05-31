@@ -1,68 +1,81 @@
-﻿@model CertificateValues
+﻿@using System.Globalization
+@model AuthenticationValues
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-
-
-    <p>Current client certificate:</p>
-    <div class="row">
-        <div class="col text-right">
-            <strong>Thumbprint</strong>
-        </div>
-        <div class="col text-left">
-            @Model.Thumbprint
-        </div>
-    </div>
-    <div class="row">
-        <div class="col text-right">
-            <strong>Valid From</strong>
-        </div>
-        <div class="col text-left">
-            @Model.ValidFrom?.ToLongDateString()
-        </div>
-    </div>
-    <div class="row">
-        <div class="col text-right">
-            <strong>Valid To</strong>
-        </div>
-        <div class="col text-left">
-            @Model.ValidTo?.ToLongDateString()
-        </div>
-    </div>
-    <div class="row">
-        <div class="col text-right">
-            <strong>Issuer Name</strong>
-        </div>
-        <div class="col text-left">
-            @Model.IssuerName
-        </div>
-    </div>
-    <div class="row">
-        <div class="col text-right">
-            <strong>Subject Name</strong>
-        </div>
-        <div class="col text-left">
-            @Model.SubjectName
-        </div>
-    </div>
-    <div class="row">
-        <div class="col text-right">
-            <strong>User Name</strong>
-        </div>
-        <div class="col text-left">
-            @Model.UserName
-        </div>
-    </div>
-    <div class="row">
-        <div class="col text-right">
-            <strong>User Email</strong>
-        </div>
-        <div class="col text-left">
-            @Model.UserEmail
-        </div>
-    </div>
+<div class="text-center mb-4">
+    <h1 class="display-4">Current Client Certificate</h1>
 </div>
+
+<h2>
+    Client certificate details
+</h2>
+
+<table class="table table-striped mb-4" style="table-layout: fixed">
+    <tr>
+        <td><strong>Thumbprint</strong></td>
+        <td>@Model.CertificateValues.Thumbprint</td>
+    </tr>
+    <tr>
+        <td><strong>Valid From</strong></td>
+        <td>@Model.CertificateValues.ValidFrom?.ToLongDateString()</td>
+    </tr>
+    <tr>
+        <td><strong>Valid To</strong></td>
+        <td>@Model.CertificateValues.ValidTo?.ToLongDateString()</td>
+    </tr>
+    <tr>
+        <td><strong>Issuer Name</strong></td>
+        <td>@Model.CertificateValues.IssuerName</td>
+    </tr>
+    <tr>
+        <td><strong>Subject Name</strong></td>
+        <td>@Model.CertificateValues.SubjectName</td>
+    </tr>
+    <tr>
+        <td><strong>User UPN</strong></td>
+        <td>@Model.CertificateValues.UserUpn</td>
+    </tr>
+    <tr>
+        <td><strong>User Name</strong></td>
+        <td>@Model.CertificateValues.UserName</td>
+    </tr>
+    <tr>
+        <td><strong>User Email</strong></td>
+        <td>@Model.CertificateValues.UserEmail</td>
+    </tr>
+</table>
+
+<h2>Current user authentication</h2>
+
+<table class="table table-striped mb-4" style="table-layout: fixed">
+    <tr>
+        <td><strong>Is Authenticated?</strong></td>
+        <td>@Model.IdentityValues.IsAuthenticated</td>
+    </tr>
+    <tr>
+        <td><strong>Authentication Type</strong></td>
+        <td>@Model.IdentityValues.AuthenticationType</td>
+    </tr>
+    <tr>
+        <td><strong>Name</strong></td>
+        <td>@Model.IdentityValues.Name</td>
+    </tr>
+</table>
+
+<h2>Current user claims</h2>
+
+<table class="table table-striped mb-4" style="table-layout: fixed">
+    @foreach (var claim in @Model.IdentityValues.Claims)
+    {
+        <tr>
+            <td>
+                <strong>@(new CultureInfo("en-US", false).TextInfo.ToTitleCase(claim.Type.Split("/").Last()))</strong>
+            </td>
+            <td>
+                @claim.Value
+            </td>
+        </tr>
+    }
+</table>

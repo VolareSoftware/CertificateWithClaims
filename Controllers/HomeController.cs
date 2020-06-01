@@ -13,24 +13,24 @@ namespace CertificateWithClaims.Controllers
         {
             var model = new AuthenticationValues();
 
-            var cert = HttpContext.Connection.ClientCertificate;
-            if (cert != null)
+            var certificate = HttpContext.Connection.ClientCertificate;
+            if (certificate != null)
             {
-                model.CertificateValues.Thumbprint = cert.Thumbprint;
-                model.CertificateValues.FriendlyName = cert.FriendlyName;
-                model.CertificateValues.ValidFrom = cert.NotBefore;
-                model.CertificateValues.ValidTo = cert.NotAfter;
-                model.CertificateValues.IssuerName = cert.IssuerName.Name;
-                model.CertificateValues.SubjectName = cert.SubjectName.Name;
-                model.CertificateValues.UserUpn = cert.GetNameInfo(X509NameType.UpnName, false);
-                model.CertificateValues.UserName = cert.GetNameInfo(X509NameType.SimpleName, false);
-                model.CertificateValues.UserEmail = cert.GetNameInfo(X509NameType.EmailName, false);
+                model.CertificateValues.Thumbprint = certificate.Thumbprint;
+                model.CertificateValues.FriendlyName = certificate.FriendlyName;
+                model.CertificateValues.ValidFrom = certificate.NotBefore;
+                model.CertificateValues.ValidTo = certificate.NotAfter;
+                model.CertificateValues.IssuerName = certificate.IssuerName.Name;
+                model.CertificateValues.SubjectName = certificate.SubjectName.Name;
+                model.CertificateValues.UserUpn = certificate.GetNameInfo(X509NameType.UpnName, false);
+                model.CertificateValues.UserName = certificate.GetNameInfo(X509NameType.SimpleName, false);
+                model.CertificateValues.UserEmail = certificate.GetNameInfo(X509NameType.EmailName, false);
             }
 
             var identity = ControllerContext.HttpContext.User.Identity;
-            if (identity!= null)
+            if (identity != null)
             {
-                model.IdentityValues.IsAuthenticated= identity.IsAuthenticated;
+                model.IdentityValues.IsAuthenticated = identity.IsAuthenticated;
                 model.IdentityValues.AuthenticationType = identity.AuthenticationType;
                 model.IdentityValues.Name = identity.Name;
                 model.IdentityValues.Claims = HttpContext.User.Claims;

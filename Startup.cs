@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using CertificateWithClaims.Extensions;
 using CertificateWithClaims.Services;
 using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Builder;
@@ -30,17 +31,22 @@ namespace CertificateWithClaims
                         OnCertificateValidated = context =>
                         {
                             // Check the certificate
+                            var certificate = context.ClientCertificate;
                             var certificateValidator = context.HttpContext.RequestServices.GetService<CertificateValidator>();
-                            var isCertificateValid = certificateValidator.ValidateCertificate(context.ClientCertificate);
+                            var isCertificateValid = certificateValidator.ValidateCertificate(certificate);
+
 
                             if (isCertificateValid)
                             {
                                 var claims = new[]
                                 {
-                                    new Claim(ClaimTypes.Upn, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer),
-                                    new Claim(ClaimTypes.NameIdentifier, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer),
-                                    new Claim(ClaimTypes.Name, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer),
-                                    new Claim(ClaimTypes.Email, context.ClientCertificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer)
+                                    new Claim(ClaimTypes.NameIdentifier, certificate.Subject, ClaimValueTypes.String, context.Options.ClaimsIssuer),
+                                    new Claim(ClaimTypes.Upn, certificate.GetNameInfo(X509NameType.UpnName, false), ClaimValueTypes.String, context.Options.ClaimsIssuer),
+                                    new Claim(ClaimTypes.Name, certificate.GetNameInfo(X509NameType.SimpleName, false), ClaimValueTypes.String, context.Options.ClaimsIssuer),
+                                    new Claim(ClaimTypes.Email, certificate.GetNameInfo(X509NameType.EmailName, false), ClaimValueTypes.String, context.Options.ClaimsIssuer),
+                                    new Claim(ClaimTypes.Locality, certificate.ParseFromSubject("L"), ClaimValueTypes.String, context.Options.ClaimsIssuer),
+                                    new Claim(ClaimTypes.StateOrProvince, certificate.ParseFromSubject("S"), ClaimValueTypes.String, context.Options.ClaimsIssuer),
+                                    new Claim(ClaimTypes.Country, certificate.ParseFromSubject("C"), ClaimValueTypes.String, context.Options.ClaimsIssuer)
                                 };
 
                                 context.Principal = new ClaimsPrincipal(new ClaimsIdentity(claims, context.Scheme.Name));
@@ -52,13 +58,10 @@ namespace CertificateWithClaims
                             }
 
                             return Task.CompletedTask;
-                        }
-                    };
-                    options.Events = new CertificateAuthenticationEvents
-                    {
+                        },
                         OnAuthenticationFailed = context =>
                         {
-                            context.Fail("Certificate could not be validated.");
+                            context.Fail("Certificate authentication failed.");
 
                             return Task.CompletedTask;
                         }

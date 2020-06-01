@@ -35,5 +35,22 @@ namespace CertificateWithClaims.Extensions
 
             return hashAsString;
         }
+
+        public static string ParseFromSubject(this X509Certificate2 certificate, string keyToFind)
+        {
+            var keyValues = certificate.Subject.Split(", ");
+            foreach (var keyValue in keyValues.Where(x=>x.Contains("=")))
+            {
+                var key = keyValue.Split("=")[0];
+                var value = keyValue.Split("=")[1];
+
+                if (key == keyToFind)
+                {
+                    return value;
+                }
+            }
+
+            return null;
+        }
     }
 }
